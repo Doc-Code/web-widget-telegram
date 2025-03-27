@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Демо Telegram виджета</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+        background-color: #f7f7f7;
+        color: #333;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        color: #0088cc;
+        margin-top: 0;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+      }
+
+      h2 {
+        color: #333;
+        margin-top: 25px;
+        font-size: 1.3em;
+      }
+
+      pre {
+        background-color: #f5f5f5;
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+        margin: 20px 0;
+        border-left: 4px solid #0088cc;
+      }
+
+      code {
+        font-family: Monaco, monospace;
+        font-size: 14px;
+      }
+
+      .option-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+
+      .option-table th,
+      .option-table td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .option-table th {
+        background-color: #f5f5f5;
+        font-weight: bold;
+      }
+
+      .demo-buttons {
+        margin: 30px 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .demo-button {
+        background-color: #0088cc;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.2s;
+      }
+
+      .demo-button:hover {
+        background-color: #006699;
+      }
+
+      .dark-mode-demo {
+        background-color: #222;
+        color: #f0f0f0;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 20px;
+        display: none;
+      }
+
+      .dark-mode-demo h3 {
+        color: #29a9eb;
+        margin-top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Демонстрация Telegram виджета</h1>
+
+      <p>
+        Этот виджет позволяет добавить на ваш сайт удобную кнопку для связи через Telegram. Пользователю достаточно
+        кликнуть на иконку или текстовый пузырь, чтобы перейти в чат с вашим ботом.
+      </p>
+
+      <h2>Три способа установки и настройки</h2>
+
+      <h3>1. Простая установка</h3>
+      <p>
+        Просто скопируйте весь код и вставьте его в HTML-страницу прямо перед закрывающим тегом
+        <code>&lt;/body&gt;</code>:
+      </p>
+
+      <pre><code>&lt;script&gt;
+// Вставьте здесь весь код виджета
+&lt;/script&gt;</code></pre>
+
+      <h3>2. Настройка через data-атрибуты</h3>
+      <p>
+        Скопируйте файл <code>simple-telegram-widget.js</code> на свой сервер и подключите его с настройками через
+        data-атрибуты:
+      </p>
+
+      <pre><code>&lt;script 
+  src="simple-telegram-widget.js"
+  data-telegram-username="your_bot_username"
+  data-title="Бот бронирования"
+  data-subtitle="и общения на тему проживания..."
+  data-color="#0088cc"
+  data-position="bottom-right"
+  data-wave-strength="strong"
+  data-dark-mode="false"
+  data-gradient-border="true"
+&gt;&lt;/script&gt;</code></pre>
+
+      <h3>3. Настройка через JavaScript</h3>
+      <p>Настройте виджет после загрузки страницы с помощью JavaScript:</p>
+
+      <pre><code>&lt;script src="simple-telegram-widget.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  configureTelegramWidget({
+    telegramUsername: 'your_bot_username',
+    title: 'Бот бронирования',
+    subtitle: 'и общения на тему проживания...',
+    color: '#0088cc',
+    borderColor: '#0088cc',
+    position: 'bottom-right',
+    waveStrength: 'strong',
+    attentionEffect: 'bounce',
+    darkMode: false,
+    gradientBorder: true
+  });
+&lt;/script&gt;</code></pre>
+
+      <h2>Демонстрация возможностей</h2>
+
+      <div class="demo-buttons">
+        <button class="demo-button" onclick="changePosition('top-left')">Левый верхний угол</button>
+        <button class="demo-button" onclick="changePosition('top-right')">Правый верхний угол</button>
+        <button class="demo-button" onclick="changePosition('bottom-left')">Левый нижний угол</button>
+        <button class="demo-button" onclick="changePosition('bottom-right')">Правый нижний угол</button>
+      </div>
+
+      <div class="demo-buttons">
+        <button class="demo-button" onclick="changeColor('#0088cc')">Стандартный цвет</button>
+        <button class="demo-button" onclick="changeColor('#4CAF50')">Зелёный</button>
+        <button class="demo-button" onclick="changeColor('#E91E63')">Розовый</button>
+        <button class="demo-button" onclick="changeColor('#9C27B0')">Фиолетовый</button>
+      </div>
+
+      <div class="demo-buttons">
+        <button class="demo-button" onclick="changeEffect('wave')">Эффект махания</button>
+        <button class="demo-button" onclick="changeEffect('bounce')">Эффект прыжка</button>
+        <button class="demo-button" onclick="changeEffect('glow')">Эффект свечения</button>
+      </div>
+
+      <div class="demo-buttons">
+        <button class="demo-button" onclick="toggleDarkMode()">Переключить тёмную тему</button>
+        <button class="demo-button" onclick="toggleGradientBorder()">Градиентная рамка</button>
+        <button class="demo-button" onclick="resetWidget()">Сбросить настройки</button>
+      </div>
+
+      <div id="darkModeDemo" class="dark-mode-demo">
+        <h3>Демонстрация тёмной темы</h3>
+        <p>Виджет автоматически адаптируется к тёмному фону вашего сайта.</p>
+      </div>
+
+      <h2>Все доступные настройки</h2>
+
+      <table class="option-table">
+        <tr>
+          <th>Параметр</th>
+          <th>Описание</th>
+          <th>Значение по умолчанию</th>
+        </tr>
+        <tr>
+          <td>telegramUsername</td>
+          <td>Имя пользователя Telegram бота (без @)</td>
+          <td>your_bot_username</td>
+        </tr>
+        <tr>
+          <td>title</td>
+          <td>Заголовок в пузыре</td>
+          <td>Бот бронирования</td>
+        </tr>
+        <tr>
+          <td>subtitle</td>
+          <td>Подзаголовок в пузыре</td>
+          <td>и общения на тему проживания...</td>
+        </tr>
+        <tr>
+          <td>position</td>
+          <td>Положение виджета на странице</td>
+          <td>bottom-right</td>
+        </tr>
+        <tr>
+          <td>showDelay</td>
+          <td>Задержка появления пузыря после загрузки (мс)</td>
+          <td>1000</td>
+        </tr>
+        <tr>
+          <td>hideDelay</td>
+          <td>Время до скрытия пузыря (мс)</td>
+          <td>10000</td>
+        </tr>
+        <tr>
+          <td>waveDelay</td>
+          <td>Задержка до начала анимации (мс)</td>
+          <td>15000</td>
+        </tr>
+        <tr>
+          <td>waveInterval</td>
+          <td>Интервал между анимациями (мс)</td>
+          <td>30000</td>
+        </tr>
+        <tr>
+          <td>waveStrength</td>
+          <td>Сила махания (light, medium, strong)</td>
+          <td>medium</td>
+        </tr>
+        <tr>
+          <td>attentionEffect</td>
+          <td>Тип анимации (wave, bounce, glow, none)</td>
+          <td>wave</td>
+        </tr>
+        <tr>
+          <td>color</td>
+          <td>Основной цвет виджета</td>
+          <td>#0088cc</td>
+        </tr>
+        <tr>
+          <td>borderColor</td>
+          <td>Цвет рамки пузыря</td>
+          <td>#0088cc</td>
+        </tr>
+        <tr>
+          <td>titleColor</td>
+          <td>Цвет заголовка</td>
+          <td>#0088cc</td>
+        </tr>
+        <tr>
+          <td>subtitleColor</td>
+          <td>Цвет подзаголовка</td>
+          <td>#555</td>
+        </tr>
+        <tr>
+          <td>autoOpen</td>
+          <td>Автоматически показывать пузырь</td>
+          <td>true</td>
+        </tr>
+        <tr>
+          <td>rememberState</td>
+          <td>Запоминать закрытие пользователем</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>darkMode</td>
+          <td>Использовать тёмную тему</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>gradientBorder</td>
+          <td>Использовать градиентную рамку</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td>zIndex</td>
+          <td>Z-index контейнера виджета</td>
+          <td>9999</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Подключаем виджет -->
+    <script src="simple-telegram-widget.js"></script>
+
+    <!-- Скрипт для демонстрации функций -->
+    <script>
+      // Настройки по умолчанию
+      const defaultSettings = {
+        telegramUsername: 'your_bot_username',
+        title: 'Бот бронирования',
+        subtitle: 'и общения на тему проживания...',
+        position: 'bottom-right',
+        color: '#0088cc',
+        borderColor: '#0088cc',
+        titleColor: '#0088cc',
+        subtitleColor: '#555',
+        waveStrength: 'strong',
+        attentionEffect: 'wave',
+        darkMode: false,
+        gradientBorder: false
+      }
+
+      // Текущие настройки
+      let currentSettings = { ...defaultSettings }
+
+      // Инициализируем виджет с настройками по умолчанию
+      configureTelegramWidget(currentSettings)
+
+      // Функция для изменения положения виджета
+      function changePosition(position) {
+        currentSettings.position = position
+        configureTelegramWidget(currentSettings)
+      }
+
+      // Функция для изменения цвета виджета
+      function changeColor(color) {
+        currentSettings.color = color
+        currentSettings.borderColor = color
+        currentSettings.titleColor = color
+        configureTelegramWidget(currentSettings)
+      }
+
+      // Функция для изменения эффекта анимации
+      function changeEffect(effect) {
+        currentSettings.attentionEffect = effect
+        configureTelegramWidget(currentSettings)
+      }
+
+      // Функция для переключения тёмной темы
+      function toggleDarkMode() {
+        currentSettings.darkMode = !currentSettings.darkMode
+        const darkModeDemo = document.getElementById('darkModeDemo')
+
+        if (currentSettings.darkMode) {
+          darkModeDemo.style.display = 'block'
+        } else {
+          darkModeDemo.style.display = 'none'
+        }
+
+        configureTelegramWidget(currentSettings)
+      }
+
+      // Функция для переключения градиентной рамки
+      function toggleGradientBorder() {
+        currentSettings.gradientBorder = !currentSettings.gradientBorder
+        configureTelegramWidget(currentSettings)
+      }
+
+      // Функция для сброса настроек
+      function resetWidget() {
+        currentSettings = { ...defaultSettings }
+        document.getElementById('darkModeDemo').style.display = 'none'
+        configureTelegramWidget(currentSettings)
+      }
+    </script>
+  </body>
+</html>

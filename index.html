@@ -298,6 +298,12 @@
             <input type="number" id="config-hide-delay" value="10000" min="0" step="1000" onchange="updateConfig()" />
             <p style="font-size: 11px; margin-top: 3px">(0 = не скрывать)</p>
           </div>
+
+          <div class="form-group">
+            <label for="config-offset">Отступ от края (px):</label>
+            <input type="number" id="config-offset" value="20" min="0" max="500" onchange="updateConfig()" />
+            <small class="form-text text-muted">Расстояние от края экрана в пикселях</small>
+          </div>
         </div>
 
         <div style="margin: 20px 0">
@@ -377,8 +383,6 @@
       <div class="demo-buttons">
         <button class="demo-button" onclick="changeEffect('wave')">Эффект махания</button>
         <button class="demo-button" onclick="changeEffect('bounce')">Эффект прыжка</button>
-        <button class="demo-button" onclick="changeEffect('glow')">Эффект свечения</button>
-        <button class="demo-button" onclick="changeEffect('none')">Без эффекта</button>
       </div>
 
       <div class="demo-buttons">
@@ -422,6 +426,7 @@
   data-dark-mode="false"
   data-gradient-border="true"
   data-auto-hide="true"
+  data-offset="50"
 &gt;&lt;/script&gt;</code></pre>
 
       <h3>3. Настройка через JavaScript</h3>
@@ -440,7 +445,8 @@
     attentionEffect: 'bounce',
     darkMode: false,
     gradientBorder: true,
-    autoHide: false  // Пузырь не будет скрываться
+    autoHide: false,
+    offset: 50
   });
 &lt;/script&gt;</code></pre>
 
@@ -573,6 +579,12 @@
           <td>9999</td>
           <td>Любое положительное число</td>
         </tr>
+        <tr>
+          <td>offset</td>
+          <td>Отступ от края экрана (px)</td>
+          <td>20</td>
+          <td>Любое число от 0 до 500</td>
+        </tr>
       </table>
     </div>
 
@@ -602,7 +614,8 @@
         zIndex: 9999,
         autoOpen: true,
         rememberState: false,
-        autoHide: true
+        autoHide: true,
+        offset: 20
       }
 
       // Текущие настройки
@@ -703,6 +716,7 @@
         document.getElementById('config-auto-open').checked = defaultSettings.autoOpen
         document.getElementById('config-remember-state').checked = defaultSettings.rememberState
         document.getElementById('config-auto-hide').checked = defaultSettings.autoHide
+        document.getElementById('config-offset').value = defaultSettings.offset
 
         configureTelegramWidget(currentSettings)
         updateConfig()
@@ -729,7 +743,8 @@
           gradientBorder: document.getElementById('config-gradient-border').checked,
           autoOpen: document.getElementById('config-auto-open').checked,
           rememberState: document.getElementById('config-remember-state').checked,
-          autoHide: document.getElementById('config-auto-hide').checked
+          autoHide: document.getElementById('config-auto-hide').checked,
+          offset: parseInt(document.getElementById('config-offset').value)
         }
 
         // Если hideDelay = 0, явно устанавливаем autoHide = false
@@ -828,6 +843,29 @@
       document.addEventListener('DOMContentLoaded', function () {
         updateConfig()
       })
+
+      // Добавляем обработчики изменения настроек
+      document.getElementById('telegramUsername').addEventListener('input', updateWidget)
+      document.getElementById('title').addEventListener('input', updateWidget)
+      document.getElementById('subtitle').addEventListener('input', updateWidget)
+      document.getElementById('position').addEventListener('change', updateWidget)
+      document.getElementById('offset').addEventListener('input', updateWidget)
+      document.getElementById('showDelay').addEventListener('input', updateWidget)
+      document.getElementById('hideDelay').addEventListener('input', updateWidget)
+      document.getElementById('waveDelay').addEventListener('input', updateWidget)
+      document.getElementById('waveInterval').addEventListener('input', updateWidget)
+      document.getElementById('waveStrength').addEventListener('change', updateWidget)
+      document.getElementById('attentionEffect').addEventListener('change', updateWidget)
+      document.getElementById('color').addEventListener('input', updateWidget)
+      document.getElementById('borderColor').addEventListener('input', updateWidget)
+      document.getElementById('titleColor').addEventListener('input', updateWidget)
+      document.getElementById('subtitleColor').addEventListener('input', updateWidget)
+      document.getElementById('autoOpen').addEventListener('change', updateWidget)
+      document.getElementById('rememberState').addEventListener('change', updateWidget)
+      document.getElementById('darkMode').addEventListener('change', updateWidget)
+      document.getElementById('gradientBorder').addEventListener('change', updateWidget)
+      document.getElementById('zIndex').addEventListener('input', updateWidget)
+      document.getElementById('autoHide').addEventListener('change', updateWidget)
     </script>
   </body>
 </html>

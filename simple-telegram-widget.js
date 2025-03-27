@@ -14,6 +14,7 @@
             display: flex;
             align-items: center;
             pointer-events: none;
+            transform: none !important; /* Предотвращаем центрирование */
         }
         
         .telegram-widget-icon {
@@ -201,7 +202,7 @@
         }
 
         .telegram-widget-top-left {
-            top: 20px;
+            top: var(--telegram-widget-offset, 20px) !important;
             left: 20px;
             right: auto;
             bottom: auto;
@@ -232,13 +233,13 @@
         }
         
         .telegram-widget-top-right {
-            top: 20px;
+            top: var(--telegram-widget-offset, 20px) !important;
             right: 20px;
             bottom: auto;
         }
         
         .telegram-widget-bottom-left {
-            bottom: 20px;
+            bottom: var(--telegram-widget-offset, 20px) !important;
             left: 20px;
             right: auto;
             flex-direction: row-reverse;
@@ -265,6 +266,11 @@
         
         .telegram-widget-bottom-left .telegram-widget-bubble:hover:before {
             border-color: transparent #29a9eb transparent transparent;
+        }
+
+        .telegram-widget-bottom-right {
+            bottom: var(--telegram-widget-offset, 20px) !important;
+            right: 20px;
         }
 
         /* Стили для тёмной темы */
@@ -371,6 +377,12 @@
                 margin-left: 10px;
             }
         }
+
+        /* Добавляем стили для кастомного отступа */
+        .telegram-widget-custom-offset {
+            bottom: var(--telegram-widget-offset, 20px) !important;
+            top: var(--telegram-widget-offset, auto) !important;
+        }
     `
 
   document.head.appendChild(style)
@@ -416,6 +428,7 @@
     title: 'Бот бронирования', // заголовок виджета
     subtitle: 'и общения на тему проживания...', // подзаголовок
     position: 'bottom-right', // положение виджета: top-left, top-right, bottom-left, bottom-right
+    offset: 20, // отступ от края экрана в пикселях
     showDelay: 1000, // задержка появления пузыря при загрузке страницы (мс)
     hideDelay: 10000, // время до скрытия пузыря (мс)
     waveDelay: 15000, // задержка до начала махания иконкой (мс)
@@ -503,6 +516,9 @@
       // По умолчанию - правый нижний угол
       container.classList.add('telegram-widget-bottom-right')
     }
+
+    // Применяем кастомный отступ
+    container.style.setProperty('--telegram-widget-offset', `${settings.offset}px`)
 
     // Применяем дополнительные классы если нужно
     if (settings.darkMode) {
@@ -722,8 +738,26 @@
       subtitleElement.textContent = settings.subtitle
     }
 
-    // Устанавливаем позицию
+    // Устанавливаем позицию и отступ
     setPosition(settings.position)
+
+    // Применяем дополнительные классы если нужно
+    if (settings.darkMode) {
+      container.classList.add('telegram-widget-dark')
+    } else {
+      container.classList.remove('telegram-widget-dark')
+    }
+
+    if (settings.gradientBorder) {
+      container.classList.add('telegram-widget-gradient-border')
+    } else {
+      container.classList.remove('telegram-widget-gradient-border')
+    }
+
+    // Устанавливаем z-index если указан
+    if (settings.zIndex) {
+      container.style.zIndex = settings.zIndex
+    }
 
     // Устанавливаем силу махания
     setWaveStrength(settings.waveStrength)
@@ -764,25 +798,6 @@
 
     if (settings.subtitleColor && subtitleElement) {
       subtitleElement.style.color = settings.subtitleColor
-    }
-
-    // Применяем темную тему если нужно
-    if (settings.darkMode) {
-      container.classList.add('telegram-widget-dark')
-    } else {
-      container.classList.remove('telegram-widget-dark')
-    }
-
-    // Применяем градиентную рамку если нужно
-    if (settings.gradientBorder) {
-      container.classList.add('telegram-widget-gradient-border')
-    } else {
-      container.classList.remove('telegram-widget-gradient-border')
-    }
-
-    // Устанавливаем z-index если указан
-    if (settings.zIndex) {
-      container.style.zIndex = settings.zIndex
     }
 
     // Если hideDelay = 0 или autoHide = false, явно отключаем автоскрытие
@@ -841,6 +856,7 @@
      data-subtitle="и общения на тему проживания..."
      data-color="#0088cc"
      data-position="bottom-right"
+     data-offset="50"
      data-wave-strength="strong"
      data-dark-mode="false"
      data-auto-hide="true"
@@ -857,6 +873,7 @@
        color: '#0088cc',
        borderColor: '#0088cc',
        position: 'bottom-right',
+       offset: 50, // отступ от края экрана в пикселях
        waveStrength: 'strong',
        attentionEffect: 'bounce',
        darkMode: true,
@@ -870,6 +887,7 @@
 - title: заголовок пузыря
 - subtitle: подзаголовок пузыря
 - position: положение на странице (top-left, top-right, bottom-left, bottom-right)
+- offset: отступ от края экрана в пикселях (по умолчанию 20)
 - showDelay: задержка появления пузыря при загрузке (мс)
 - hideDelay: время до скрытия пузыря (мс), 0 = не скрывать
 - autoHide: автоматически скрывать пузырь (true/false) 

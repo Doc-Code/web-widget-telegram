@@ -82,7 +82,7 @@ A lightweight, customizable widget for connecting website visitors with your Tel
 </script>
 ```
 
-[Смотрите полную документацию и примеры](https://github.com/Doc-Code/web-widget-telegram/blob/main/docs/ru/README.md)
+[Смотрите полную документацию и примеры](https://github.com/Doc-Code/web-widget-telegram/blob/main/README.md)
 
 
 telegram widget, telegram chat widget, telegram button, telegram integration, telegram contact button, website chat widget, telegram messaging, telegram bot widget, telegram contact form, telegram popup, web telegram widget, chat with telegram, telegram website integration, telegram contact us, website telegram button, telegram chat bubble, social media widget, telegram support chat, telegram messenger widget, website messenger integration

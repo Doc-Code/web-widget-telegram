@@ -1,7 +1,8 @@
 // Простой виджет для перехода в Telegram бот бронирования
-// Просто вставьте этот код перед закрывающим тегом </body> на вашем сайте
+// Просто вставьте этот код прямо в HTML-страницу между тегами <script></script>
 
 ;(function () {
+  // Создаем стили
   const style = document.createElement('style')
   style.textContent = `
         .telegram-widget-container {
@@ -110,7 +111,7 @@
         }
         
         .telegram-widget-bubble:hover:before {
-            border-color: transparent #29a9eb transparent transparent;
+            border-color: transparent transparent transparent #29a9eb;
         }
         
         .telegram-widget-bubble.active {
@@ -265,6 +266,83 @@
         .telegram-widget-bottom-left .telegram-widget-bubble:hover:before {
             border-color: transparent #29a9eb transparent transparent;
         }
+
+        /* Стили для тёмной темы */
+        .telegram-widget-dark .telegram-widget-bubble {
+            background-color: #2a2a2a;
+            color: #f0f0f0;
+            border-color: #0088cc;
+        }
+        
+        .telegram-widget-dark .telegram-widget-title {
+            color: #29a9eb;
+        }
+        
+        .telegram-widget-dark .telegram-widget-subtitle {
+            color: #cccccc;
+        }
+        
+        .telegram-widget-dark .telegram-widget-bubble:after {
+            border-color: transparent transparent transparent #2a2a2a;
+        }
+        
+        .telegram-widget-dark.telegram-widget-top-left .telegram-widget-bubble:after,
+        .telegram-widget-dark.telegram-widget-bottom-left .telegram-widget-bubble:after {
+            border-color: transparent #2a2a2a transparent transparent;
+        }
+        
+        /* Градиентная рамка */
+        .telegram-widget-gradient-border .telegram-widget-bubble {
+            border: none;
+            position: relative;
+            background-clip: padding-box;
+            padding: 13px 16px;
+        }
+        
+        .telegram-widget-gradient-border .telegram-widget-bubble::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+            margin: -2px;
+            border-radius: 20px;
+            background: linear-gradient(45deg, #0088cc, #29a9eb);
+        }
+        
+        /* Дополнительная анимация для привлечения внимания */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+        
+        .telegram-widget-icon.bouncing {
+            animation: bounce 2s ease infinite;
+        }
+        
+        /* Эффект свечения для иконки */
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(0, 136, 204, 0.6); }
+            50% { box-shadow: 0 0 20px rgba(0, 136, 204, 0.9); }
+            100% { box-shadow: 0 0 5px rgba(0, 136, 204, 0.6); }
+        }
+        
+        .telegram-widget-icon.glowing {
+            animation: glow 1.5s infinite;
+        }
+        
+        /* Анимация появления */
+        @keyframes TelegramFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .telegram-widget-container {
+            animation: TelegramFadeIn 0.5s ease forwards;
+        }
         
         @media (max-width: 480px) {
             .telegram-widget-bubble {
@@ -293,23 +371,15 @@
                 margin-left: 10px;
             }
         }
-
-        /* Анимация для появления */
-        @keyframes TelegramFadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .telegram-widget-container {
-            animation: TelegramFadeIn 0.5s ease forwards;
-        }
     `
 
   document.head.appendChild(style)
 
+  // Создаем HTML виджета
   const container = document.createElement('div')
   container.className = 'telegram-widget-container'
 
+  // Создаем текстовый пузырь
   const bubble = document.createElement('div')
   bubble.className = 'telegram-widget-bubble'
   bubble.innerHTML = `
@@ -318,6 +388,7 @@
         <p class="telegram-widget-subtitle">и общения на тему проживания...</p>
     `
 
+  // Создаем иконку с улучшенным SVG
   const icon = document.createElement('div')
   icon.className = 'telegram-widget-icon'
   icon.innerHTML = `
@@ -327,23 +398,30 @@
         <div class="telegram-widget-shadow"></div>
     `
 
+  // Создаем ссылку для перехода в телеграм
   const link = document.createElement('a')
   link.className = 'telegram-widget-link'
   link.href = 'https://t.me/your_bot_username'
   link.target = '_blank'
 
+  // Добавляем все элементы в DOM
   container.appendChild(bubble)
   container.appendChild(icon)
   icon.appendChild(link)
   document.body.appendChild(container)
 
-  let settings = {
+  // Настройки по умолчанию
+  const defaultSettings = {
+    telegramUsername: 'your_bot_username', // имя пользователя в Telegram
+    title: 'Бот бронирования', // заголовок виджета
+    subtitle: 'и общения на тему проживания...', // подзаголовок
     position: 'bottom-right', // положение виджета: top-left, top-right, bottom-left, bottom-right
     showDelay: 1000, // задержка появления пузыря при загрузке страницы (мс)
     hideDelay: 10000, // время до скрытия пузыря (мс)
     waveDelay: 15000, // задержка до начала махания иконкой (мс)
     waveInterval: 30000, // интервал между маханиями (мс)
     waveStrength: 'medium', // сила махания: 'light', 'medium', 'strong'
+    attentionEffect: 'wave', // эффект для привлечения внимания: 'wave', 'bounce', 'glow', 'none'
     color: '#0088cc', // основной цвет виджета
     borderColor: '#0088cc', // цвет рамки пузыря
     titleColor: '#0088cc', // цвет заголовка пузыря
@@ -352,35 +430,81 @@
     rememberState: false, // запоминать состояние (если пользователь закрыл, не показывать снова)
     darkMode: false, // использовать темную тему
     gradientBorder: false, // использовать градиентную рамку вместо сплошной
-    zIndex: 9999 // z-index контейнера виджета
+    zIndex: 9999, // z-index контейнера виджета
+    autoHide: true // автоматически скрывать пузырь после показа
+  }
+
+  // Текущие настройки виджета
+  let settings = { ...defaultSettings }
+
+  // Получение параметров из дата-атрибутов скрипта
+  function getScriptParams() {
+    try {
+      const scripts = document.getElementsByTagName('script')
+      const currentScript = scripts[scripts.length - 1]
+
+      // Получаем все data-атрибуты
+      const dataset = currentScript.dataset || {}
+
+      // Обрабатываем каждый параметр
+      const params = {}
+      for (const key in dataset) {
+        let value = dataset[key]
+
+        // Преобразуем строковые значения в нужные типы
+        if (value === 'true') value = true
+        else if (value === 'false') value = false
+        else if (!isNaN(Number(value)) && value !== '') value = Number(value)
+
+        params[key] = value
+      }
+
+      return params
+    } catch (e) {
+      return {}
+    }
+  }
+
+  // Объединяем настройки по умолчанию с параметрами из дата-атрибутов
+  const scriptParams = getScriptParams()
+  if (Object.keys(scriptParams).length > 0) {
+    settings = { ...settings, ...scriptParams }
   }
 
   const closeButton = bubble.querySelector('.telegram-widget-close')
   let widgetClosed = false
   let waveTimer = null
 
-  closeButton.addEventListener('click', (e) => {
-    e.stopPropagation()
-    bubble.classList.remove('active')
-    widgetClosed = true
+  // Закрытие пузыря при клике на крестик
+  if (closeButton) {
+    closeButton.addEventListener('click', (e) => {
+      e.stopPropagation()
+      bubble.classList.remove('active')
+      widgetClosed = true
 
-    if (settings.rememberState) {
-      localStorage.setItem('telegramWidgetClosed', 'true')
-    }
-  })
+      // Если настроено запоминание состояния, сохраняем в localStorage
+      if (settings.rememberState) {
+        localStorage.setItem('telegramWidgetClosed', 'true')
+      }
+    })
+  }
 
+  // Проверяем, был ли виджет закрыт ранее
   if (settings.rememberState && localStorage.getItem('telegramWidgetClosed') === 'true') {
     widgetClosed = true
   }
 
+  // Функция для установки положения виджета
   function setPosition(position) {
     container.className = 'telegram-widget-container'
     if (['top-left', 'top-right', 'bottom-left', 'bottom-right'].includes(position)) {
       container.classList.add('telegram-widget-' + position)
     } else {
+      // По умолчанию - правый нижний угол
       container.classList.add('telegram-widget-bottom-right')
     }
 
+    // Применяем дополнительные классы если нужно
     if (settings.darkMode) {
       container.classList.add('telegram-widget-dark')
     }
@@ -389,11 +513,13 @@
       container.classList.add('telegram-widget-gradient-border')
     }
 
+    // Устанавливаем z-index если указан
     if (settings.zIndex) {
       container.style.zIndex = settings.zIndex
     }
   }
 
+  // Установка интенсивности махания
   function setWaveStrength(strength) {
     const waveAnimations = {
       light: `@keyframes wave {
@@ -421,6 +547,7 @@
             }`
     }
 
+    // Добавляем стиль с нужной анимацией, удаляя старый, если был
     const oldStyle = document.getElementById('telegram-wave-animation')
     if (oldStyle) oldStyle.remove()
 
@@ -430,65 +557,42 @@
     document.head.appendChild(waveStyle)
   }
 
+  // Показываем пузырь через определенное время после загрузки
   function showBubble() {
     if (!widgetClosed) {
       bubble.classList.add('active')
 
-      setTimeout(() => {
-        if (!container.querySelector(':hover')) {
-          bubble.classList.remove('active')
-        }
+      // Скрываем пузырь через указанное время, но только если autoHide = true и hideDelay > 0
+      if (settings.autoHide !== false && settings.hideDelay > 0) {
+        setTimeout(() => {
+          if (!container.querySelector(':hover')) {
+            bubble.classList.remove('active')
+          }
 
+          // После скрытия пузыря, запускаем анимацию для привлечения внимания через какое-то время
+          if (!waveTimer && !widgetClosed) {
+            waveTimer = setTimeout(() => {
+              playAttentionAnimation()
+            }, settings.waveDelay)
+          }
+        }, settings.hideDelay)
+      } else {
+        // Если autoHide = false, то всё равно запускаем анимацию через некоторое время
         if (!waveTimer && !widgetClosed) {
           waveTimer = setTimeout(() => {
             playAttentionAnimation()
           }, settings.waveDelay)
         }
-      }, settings.hideDelay)
-    }
-  }
-
-  if (settings.autoOpen) {
-    setTimeout(showBubble, settings.showDelay)
-  }
-
-  setPosition(settings.position)
-
-  setWaveStrength(settings.waveStrength)
-
-  icon.addEventListener('mouseenter', () => {
-    if (!widgetClosed) {
-      bubble.classList.add('active')
-      icon.classList.remove('waving')
-
-      if (waveTimer) {
-        clearTimeout(waveTimer)
-        waveTimer = null
       }
     }
-  })
+  }
 
-  bubble.addEventListener('click', (e) => {
-    const target = e.target
-    if (target && (!target.classList || !target.classList.contains('telegram-widget-close'))) {
-      window.open(link.href, '_blank')
-    }
-  })
-
-  icon.addEventListener('click', () => {
-    if (widgetClosed) {
-      widgetClosed = false
-      localStorage.removeItem('telegramWidgetClosed')
-      bubble.classList.add('active')
-    } else {
-      window.open(link.href, '_blank')
-    }
-  })
-
+  // Функция для воспроизведения анимации привлечения внимания
   function playAttentionAnimation() {
     if (widgetClosed) return
 
-    switch (settings.waveStrength) {
+    // Выбираем анимацию в зависимости от настроек
+    switch (settings.attentionEffect) {
       case 'wave':
         icon.classList.add('waving')
         setTimeout(() => icon.classList.remove('waving'), 1200)
@@ -506,27 +610,98 @@
 
       case 'none':
       default:
+        // Ничего не делаем
         break
     }
 
-    bubble.classList.add('active')
+    // Показываем пузырь при анимации, но только если он не должен быть всегда виден
+    if (!bubble.classList.contains('active')) {
+      bubble.classList.add('active')
 
-    setTimeout(() => {
-      if (!container.querySelector(':hover') && !widgetClosed) {
-        bubble.classList.remove('active')
+      // Если нужно автоматически скрывать пузырь
+      if (settings.autoHide !== false && settings.hideDelay > 0) {
+        setTimeout(() => {
+          if (!container.querySelector(':hover') && !widgetClosed) {
+            bubble.classList.remove('active')
+          }
+        }, 5000)
       }
+    }
 
-      waveTimer = setTimeout(() => {
-        if (!container.querySelector(':hover') && !widgetClosed) {
-          playAttentionAnimation()
-        }
-      }, settings.waveInterval)
-    }, 5000)
+    // Запускаем анимацию снова через некоторое время
+    waveTimer = setTimeout(() => {
+      if (!container.querySelector(':hover') && !widgetClosed) {
+        playAttentionAnimation()
+      }
+    }, settings.waveInterval)
   }
 
+  // Если включено автооткрытие, показываем пузырь после задержки
+  if (settings.autoOpen) {
+    setTimeout(showBubble, settings.showDelay)
+  }
+
+  // Применяем начальные настройки положения
+  setPosition(settings.position)
+
+  // Устанавливаем силу махания
+  setWaveStrength(settings.waveStrength)
+
+  // Показываем/скрываем пузырь при наведении на иконку
+  icon.addEventListener('mouseenter', () => {
+    if (!widgetClosed) {
+      bubble.classList.add('active')
+
+      // Убираем все анимационные классы при наведении
+      icon.classList.remove('waving', 'bouncing', 'glowing')
+
+      // Сбрасываем таймер анимации
+      if (waveTimer) {
+        clearTimeout(waveTimer)
+        waveTimer = null
+      }
+    }
+  })
+
+  // Если autoHide = true, скрываем пузырь при уходе мыши с виджета
+  if (settings.autoHide !== false && settings.hideDelay > 0) {
+    container.addEventListener('mouseleave', () => {
+      if (!widgetClosed) {
+        setTimeout(() => {
+          if (!container.querySelector(':hover')) {
+            bubble.classList.remove('active')
+          }
+        }, 1000)
+      }
+    })
+  }
+
+  // Обработчик клика по пузырю (переход в телеграм)
+  bubble.addEventListener('click', (e) => {
+    // Проверяем, что клик был не по крестику
+    const target = e.target
+    if (target && (!target.classList || !target.classList.contains('telegram-widget-close'))) {
+      window.open(link.href, '_blank')
+    }
+  })
+
+  // Обрабатываем клик по иконке
+  icon.addEventListener('click', () => {
+    if (widgetClosed) {
+      // Если пузырь был закрыт, показываем его снова при клике на иконку
+      widgetClosed = false
+      localStorage.removeItem('telegramWidgetClosed')
+      bubble.classList.add('active')
+    } else {
+      window.open(link.href, '_blank')
+    }
+  })
+
+  // Функция для настройки виджета
   function configureTelegramWidget(config) {
     if (!config) return
 
+    // Обновляем настройки
     if (typeof config === 'object') {
       settings = { ...settings, ...config }
     }
@@ -534,6 +709,7 @@
     const titleElement = container.querySelector('.telegram-widget-title')
     const subtitleElement = container.querySelector('.telegram-widget-subtitle')
 
+    // Применяем новые настройки
     if (settings.telegramUsername) {
       link.href = 'https://t.me/' + settings.telegramUsername
     }
@@ -546,18 +722,23 @@
       subtitleElement.textContent = settings.subtitle
     }
 
+    // Устанавливаем позицию
     setPosition(settings.position)
 
+    // Устанавливаем силу махания
     setWaveStrength(settings.waveStrength)
 
+    // Применяем цвета
     if (settings.color) {
       const lighterColor = lightenColor(settings.color, 20)
       icon.style.background = `${settings.color} radial-gradient(circle at 70% 30%, ${lighterColor} 0%, ${settings.color} 100%)`
-      icon.style.boxShadow = `0 4px 12px ${settings.color}66`
+      icon.style.boxShadow = `0 4px 12px ${settings.color}66` // 66 = 40% opacity
     }
 
     if (settings.borderColor && !settings.gradientBorder) {
       bubble.style.borderColor = settings.borderColor
+
+      // Обновляем цвет треугольника
       const beforeStyle = document.createElement('style')
       beforeStyle.id = 'telegram-bubble-before-style'
       beforeStyle.textContent = `
@@ -569,6 +750,11 @@
           border-color: transparent ${settings.borderColor} transparent transparent !important;
         }
       `
+
+      // Удаляем старый стиль если был
+      const oldStyle = document.getElementById('telegram-bubble-before-style')
+      if (oldStyle) oldStyle.remove()
+
       document.head.appendChild(beforeStyle)
     }
 
@@ -580,29 +766,41 @@
       subtitleElement.style.color = settings.subtitleColor
     }
 
+    // Применяем темную тему если нужно
     if (settings.darkMode) {
       container.classList.add('telegram-widget-dark')
     } else {
       container.classList.remove('telegram-widget-dark')
     }
 
+    // Применяем градиентную рамку если нужно
     if (settings.gradientBorder) {
       container.classList.add('telegram-widget-gradient-border')
     } else {
       container.classList.remove('telegram-widget-gradient-border')
     }
 
+    // Устанавливаем z-index если указан
     if (settings.zIndex) {
       container.style.zIndex = settings.zIndex
     }
+
+    // Если hideDelay = 0 или autoHide = false, явно отключаем автоскрытие
+    if (settings.hideDelay === 0) {
+      settings.autoHide = false
+    }
   }
 
+  // Экспортируем функцию настройки в глобальную область
   if (typeof window !== 'undefined') {
+    // @ts-ignore - игнорируем ошибку типа
     window.configureTelegramWidget = configureTelegramWidget
   }
 
+  // Применяем начальные настройки
   configureTelegramWidget(settings)
 
+  // Вспомогательная функция для осветления цвета (для градиента)
   function lightenColor(color, percent) {
     const num = parseInt(color.replace('#', ''), 16),
       amt = Math.round(2.55 * percent),
@@ -624,26 +822,68 @@
 })()
 
 /*
-Как использовать:
+ИНСТРУКЦИЯ ПО ИСПОЛЬЗОВАНИЮ:
 
-1. Скопируйте весь этот код и вставьте его перед закрывающим тегом </body> на вашем сайте
-2. Настройте виджет, если нужно:
+1. ПРОСТОЙ ВАРИАНТ:
+   Просто скопируйте весь этот код и вставьте его прямо в HTML-страницу между тегами <script></script>
+   
+   <script>
+     // Вставьте весь код сюда
+   </script>
 
-configureTelegramWidget({
-    telegramUsername: 'your_bot_username', // ваше имя пользователя в Telegram
-    title: 'Бот бронирования',            // заголовок виджета
-    subtitle: 'и общения на тему проживания...', // подзаголовок
-    color: '#0088cc',                     // цвет иконки (стандартный цвет Telegram)
-    borderColor: '#0088cc',               // цвет рамки пузыря
-    titleColor: '#0088cc',                // цвет заголовка
-    subtitleColor: '#555',                // цвет подзаголовка
-    position: 'bottom-right',             // положение: top-left, top-right, bottom-left, bottom-right
-    showDelay: 1000,                      // задержка появления пузыря (мс)
-    hideDelay: 10000,                     // время до скрытия пузыря (мс)
-    waveDelay: 15000,                     // задержка до начала махания (мс)
-    waveInterval: 30000,                  // интервал между маханиями (мс)
-    waveStrength: 'medium',               // сила махания: light, medium, strong
-    autoOpen: true,                       // автоматически открывать пузырь при загрузке
-    rememberState: false                  // запоминать, если пользователь закрыл виджет
-});
+2. НАСТРОЙКА ЧЕРЕЗ DATA-АТРИБУТЫ:
+   Вы можете настроить виджет, добавив data-атрибуты к тегу script:
+   
+   <script 
+     src="simple-telegram-widget.js"
+     data-telegram-username="your_bot_username"
+     data-title="Бот бронирования"
+     data-subtitle="и общения на тему проживания..."
+     data-color="#0088cc"
+     data-position="bottom-right"
+     data-wave-strength="strong"
+     data-dark-mode="false"
+     data-auto-hide="true"
+   ></script>
+
+3. НАСТРОЙКА ЧЕРЕЗ JAVASCRIPT:
+   После загрузки виджета вы можете настроить его вызовом функции:
+   
+   <script>
+     configureTelegramWidget({
+       telegramUsername: 'your_bot_username',
+       title: 'Бот бронирования',
+       subtitle: 'и общения на тему проживания...',
+       color: '#0088cc',
+       borderColor: '#0088cc',
+       position: 'bottom-right',
+       waveStrength: 'strong',
+       attentionEffect: 'bounce',
+       darkMode: true,
+       gradientBorder: true,
+       autoHide: false // Пузырь не будет скрываться автоматически
+     });
+   </script>
+
+ДОСТУПНЫЕ ПАРАМЕТРЫ:
+- telegramUsername: ваше имя пользователя в Telegram (обязательно)
+- title: заголовок пузыря
+- subtitle: подзаголовок пузыря
+- position: положение на странице (top-left, top-right, bottom-left, bottom-right)
+- showDelay: задержка появления пузыря при загрузке (мс)
+- hideDelay: время до скрытия пузыря (мс), 0 = не скрывать
+- autoHide: автоматически скрывать пузырь (true/false) 
+- waveDelay: задержка до начала анимации (мс)
+- waveInterval: интервал между анимациями (мс)
+- waveStrength: сила махания (light, medium, strong)
+- attentionEffect: тип анимации (wave, bounce, glow, none)
+- color: основной цвет виджета
+- borderColor: цвет рамки пузыря
+- titleColor: цвет заголовка
+- subtitleColor: цвет подзаголовка
+- autoOpen: автоматически показывать пузырь при загрузке (true/false)
+- rememberState: запоминать, если пользователь закрыл виджет (true/false)
+- darkMode: использовать темную тему (true/false)
+- gradientBorder: использовать градиентную рамку (true/false)
+- zIndex: z-index контейнера виджета
 */

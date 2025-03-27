@@ -15,7 +15,7 @@
       }
 
       .container {
-        max-width: 800px;
+        max-width: 850px;
         margin: 0 auto;
         background: white;
         padding: 30px;
@@ -69,7 +69,7 @@
       }
 
       .demo-buttons {
-        margin: 30px 0;
+        margin: 20px 0;
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
@@ -103,6 +103,105 @@
         color: #29a9eb;
         margin-top: 0;
       }
+
+      .configurator {
+        background-color: #f7f7f7;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 30px 0;
+        border: 1px solid #e0e0e0;
+      }
+
+      .configurator h3 {
+        margin-top: 0;
+        color: #0088cc;
+      }
+
+      .config-form {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        font-size: 14px;
+      }
+
+      .form-group select,
+      .form-group input[type='text'],
+      .form-group input[type='number'],
+      .form-group input[type='color'] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .checkbox-group {
+        margin-bottom: 10px;
+      }
+
+      .checkbox-group label {
+        font-weight: normal;
+      }
+
+      .tabs {
+        display: flex;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 15px;
+      }
+
+      .tab {
+        padding: 10px 15px;
+        cursor: pointer;
+        background: #f1f1f1;
+        margin-right: 5px;
+        border-radius: 5px 5px 0 0;
+        font-size: 14px;
+      }
+
+      .tab.active {
+        background: #0088cc;
+        color: white;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .code-output {
+        position: relative;
+      }
+
+      .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #0088cc;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        opacity: 0.8;
+      }
+
+      .copy-btn:hover {
+        opacity: 1;
+      }
     </style>
   </head>
   <body>
@@ -114,7 +213,187 @@
         кликнуть на иконку или текстовый пузырь, чтобы перейти в чат с вашим ботом.
       </p>
 
-      <h2>Три способа установки и настройки</h2>
+      <h2>Конструктор виджета</h2>
+      <p>Настройте виджет по своему вкусу и получите готовый код:</p>
+
+      <div class="configurator">
+        <h3>Настройки</h3>
+        <div class="config-form">
+          <div class="form-group">
+            <label for="config-username">Имя пользователя в Telegram:</label>
+            <input type="text" id="config-username" value="your_bot_username" onchange="updateConfig()" />
+          </div>
+
+          <div class="form-group">
+            <label for="config-title">Заголовок:</label>
+            <input type="text" id="config-title" value="Бот бронирования" onchange="updateConfig()" />
+          </div>
+
+          <div class="form-group">
+            <label for="config-subtitle">Подзаголовок:</label>
+            <input type="text" id="config-subtitle" value="и общения на тему проживания..." onchange="updateConfig()" />
+          </div>
+
+          <div class="form-group">
+            <label for="config-position">Положение:</label>
+            <select id="config-position" onchange="updateConfig()">
+              <option value="bottom-right">Правый нижний угол</option>
+              <option value="bottom-left">Левый нижний угол</option>
+              <option value="top-right">Правый верхний угол</option>
+              <option value="top-left">Левый верхний угол</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="config-effect">Эффект анимации:</label>
+            <select id="config-effect" onchange="updateConfig()">
+              <option value="wave">Махание</option>
+              <option value="bounce">Прыжок</option>
+              <option value="glow">Свечение</option>
+              <option value="none">Без эффекта</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="config-wave-strength">Сила эффекта:</label>
+            <select id="config-wave-strength" onchange="updateConfig()">
+              <option value="light">Слабая</option>
+              <option value="medium" selected>Средняя</option>
+              <option value="strong">Сильная</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="config-color">Основной цвет:</label>
+            <input type="color" id="config-color" value="#0088cc" onchange="updateConfig()" />
+          </div>
+
+          <div class="form-group">
+            <label for="config-border-color">Цвет рамки:</label>
+            <input type="color" id="config-border-color" value="#0088cc" onchange="updateConfig()" />
+          </div>
+
+          <div class="form-group">
+            <label for="config-title-color">Цвет заголовка:</label>
+            <input type="color" id="config-title-color" value="#0088cc" onchange="updateConfig()" />
+          </div>
+
+          <div class="form-group">
+            <label for="config-subtitle-color">Цвет подзаголовка:</label>
+            <input type="color" id="config-subtitle-color" value="#555555" onchange="updateConfig()" />
+          </div>
+
+          <div class="form-group">
+            <label for="config-z-index">Z-Index:</label>
+            <input type="number" id="config-z-index" value="9999" min="1" onchange="updateConfig()" />
+          </div>
+
+          <div class="form-group">
+            <label for="config-show-delay">Задержка появления (мс):</label>
+            <input type="number" id="config-show-delay" value="1000" min="0" step="500" onchange="updateConfig()" />
+          </div>
+
+          <div class="form-group">
+            <label for="config-hide-delay">Задержка скрытия (мс):</label>
+            <input type="number" id="config-hide-delay" value="10000" min="0" step="1000" onchange="updateConfig()" />
+            <p style="font-size: 11px; margin-top: 3px">(0 = не скрывать)</p>
+          </div>
+        </div>
+
+        <div style="margin: 20px 0">
+          <div class="checkbox-group">
+            <label> <input type="checkbox" id="config-dark-mode" onchange="updateConfig()" /> Тёмная тема </label>
+          </div>
+
+          <div class="checkbox-group">
+            <label>
+              <input type="checkbox" id="config-gradient-border" onchange="updateConfig()" /> Градиентная рамка
+            </label>
+          </div>
+
+          <div class="checkbox-group">
+            <label>
+              <input type="checkbox" id="config-auto-open" checked onchange="updateConfig()" /> Автоматически показывать
+            </label>
+          </div>
+
+          <div class="checkbox-group">
+            <label>
+              <input type="checkbox" id="config-remember-state" onchange="updateConfig()" /> Запоминать закрытие
+            </label>
+          </div>
+
+          <div class="checkbox-group">
+            <label>
+              <input type="checkbox" id="config-auto-hide" checked onchange="updateConfig()" /> Автоматически скрывать
+            </label>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab(this, 'js-code')">JavaScript</div>
+          <div class="tab" onclick="switchTab(this, 'data-attr-code')">Data-атрибуты</div>
+          <div class="tab" onclick="switchTab(this, 'cdn-code')">CDN</div>
+        </div>
+
+        <div class="tab-content active" id="js-code">
+          <div class="code-output">
+            <button class="copy-btn" onclick="copyCode('config-js-output')">Копировать</button>
+            <pre><code id="config-js-output"></code></pre>
+          </div>
+        </div>
+
+        <div class="tab-content" id="data-attr-code">
+          <div class="code-output">
+            <button class="copy-btn" onclick="copyCode('config-data-attr-output')">Копировать</button>
+            <pre><code id="config-data-attr-output"></code></pre>
+          </div>
+        </div>
+
+        <div class="tab-content" id="cdn-code">
+          <div class="code-output">
+            <button class="copy-btn" onclick="copyCode('config-cdn-output')">Копировать</button>
+            <pre><code id="config-cdn-output"></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <h2>Демонстрация возможностей</h2>
+
+      <div class="demo-buttons">
+        <button class="demo-button" onclick="changePosition('top-left')">Левый верхний угол</button>
+        <button class="demo-button" onclick="changePosition('top-right')">Правый верхний угол</button>
+        <button class="demo-button" onclick="changePosition('bottom-left')">Левый нижний угол</button>
+        <button class="demo-button" onclick="changePosition('bottom-right')">Правый нижний угол</button>
+      </div>
+
+      <div class="demo-buttons">
+        <button class="demo-button" onclick="changeColor('#0088cc')">Стандартный цвет</button>
+        <button class="demo-button" onclick="changeColor('#4CAF50')">Зелёный</button>
+        <button class="demo-button" onclick="changeColor('#E91E63')">Розовый</button>
+        <button class="demo-button" onclick="changeColor('#9C27B0')">Фиолетовый</button>
+      </div>
+
+      <div class="demo-buttons">
+        <button class="demo-button" onclick="changeEffect('wave')">Эффект махания</button>
+        <button class="demo-button" onclick="changeEffect('bounce')">Эффект прыжка</button>
+        <button class="demo-button" onclick="changeEffect('glow')">Эффект свечения</button>
+        <button class="demo-button" onclick="changeEffect('none')">Без эффекта</button>
+      </div>
+
+      <div class="demo-buttons">
+        <button class="demo-button" onclick="toggleDarkMode()">Тёмная тема</button>
+        <button class="demo-button" onclick="toggleGradientBorder()">Градиентная рамка</button>
+        <button class="demo-button" onclick="toggleAutoHide()">Не скрывать пузырь</button>
+        <button class="demo-button" onclick="resetWidget()">Сбросить настройки</button>
+      </div>
+
+      <div id="darkModeDemo" class="dark-mode-demo">
+        <h3>Демонстрация тёмной темы</h3>
+        <p>Виджет автоматически адаптируется к тёмному фону вашего сайта.</p>
+      </div>
+
+      <h2>Способы установки</h2>
 
       <h3>1. Простая установка</h3>
       <p>
@@ -142,6 +421,7 @@
   data-wave-strength="strong"
   data-dark-mode="false"
   data-gradient-border="true"
+  data-auto-hide="true"
 &gt;&lt;/script&gt;</code></pre>
 
       <h3>3. Настройка через JavaScript</h3>
@@ -159,42 +439,10 @@
     waveStrength: 'strong',
     attentionEffect: 'bounce',
     darkMode: false,
-    gradientBorder: true
+    gradientBorder: true,
+    autoHide: false  // Пузырь не будет скрываться
   });
 &lt;/script&gt;</code></pre>
-
-      <h2>Демонстрация возможностей</h2>
-
-      <div class="demo-buttons">
-        <button class="demo-button" onclick="changePosition('top-left')">Левый верхний угол</button>
-        <button class="demo-button" onclick="changePosition('top-right')">Правый верхний угол</button>
-        <button class="demo-button" onclick="changePosition('bottom-left')">Левый нижний угол</button>
-        <button class="demo-button" onclick="changePosition('bottom-right')">Правый нижний угол</button>
-      </div>
-
-      <div class="demo-buttons">
-        <button class="demo-button" onclick="changeColor('#0088cc')">Стандартный цвет</button>
-        <button class="demo-button" onclick="changeColor('#4CAF50')">Зелёный</button>
-        <button class="demo-button" onclick="changeColor('#E91E63')">Розовый</button>
-        <button class="demo-button" onclick="changeColor('#9C27B0')">Фиолетовый</button>
-      </div>
-
-      <div class="demo-buttons">
-        <button class="demo-button" onclick="changeEffect('wave')">Эффект махания</button>
-        <button class="demo-button" onclick="changeEffect('bounce')">Эффект прыжка</button>
-        <button class="demo-button" onclick="changeEffect('glow')">Эффект свечения</button>
-      </div>
-
-      <div class="demo-buttons">
-        <button class="demo-button" onclick="toggleDarkMode()">Переключить тёмную тему</button>
-        <button class="demo-button" onclick="toggleGradientBorder()">Градиентная рамка</button>
-        <button class="demo-button" onclick="resetWidget()">Сбросить настройки</button>
-      </div>
-
-      <div id="darkModeDemo" class="dark-mode-demo">
-        <h3>Демонстрация тёмной темы</h3>
-        <p>Виджет автоматически адаптируется к тёмному фону вашего сайта.</p>
-      </div>
 
       <h2>Все доступные настройки</h2>
 
@@ -203,101 +451,127 @@
           <th>Параметр</th>
           <th>Описание</th>
           <th>Значение по умолчанию</th>
+          <th>Возможные значения</th>
         </tr>
         <tr>
           <td>telegramUsername</td>
           <td>Имя пользователя Telegram бота (без @)</td>
           <td>your_bot_username</td>
+          <td>Любое валидное имя Telegram</td>
         </tr>
         <tr>
           <td>title</td>
           <td>Заголовок в пузыре</td>
           <td>Бот бронирования</td>
+          <td>Любой текст</td>
         </tr>
         <tr>
           <td>subtitle</td>
           <td>Подзаголовок в пузыре</td>
           <td>и общения на тему проживания...</td>
+          <td>Любой текст</td>
         </tr>
         <tr>
           <td>position</td>
           <td>Положение виджета на странице</td>
           <td>bottom-right</td>
+          <td>bottom-right, bottom-left, top-right, top-left</td>
         </tr>
         <tr>
           <td>showDelay</td>
           <td>Задержка появления пузыря после загрузки (мс)</td>
           <td>1000</td>
+          <td>Любое число ≥ 0</td>
         </tr>
         <tr>
           <td>hideDelay</td>
           <td>Время до скрытия пузыря (мс)</td>
           <td>10000</td>
+          <td>Любое число ≥ 0 (0 = не скрывать)</td>
+        </tr>
+        <tr>
+          <td>autoHide</td>
+          <td>Автоматически скрывать пузырь</td>
+          <td>true</td>
+          <td>true, false</td>
         </tr>
         <tr>
           <td>waveDelay</td>
           <td>Задержка до начала анимации (мс)</td>
           <td>15000</td>
+          <td>Любое число > 0</td>
         </tr>
         <tr>
           <td>waveInterval</td>
           <td>Интервал между анимациями (мс)</td>
           <td>30000</td>
+          <td>Любое число > 0</td>
         </tr>
         <tr>
           <td>waveStrength</td>
-          <td>Сила махания (light, medium, strong)</td>
+          <td>Сила махания</td>
           <td>medium</td>
+          <td>light, medium, strong</td>
         </tr>
         <tr>
           <td>attentionEffect</td>
-          <td>Тип анимации (wave, bounce, glow, none)</td>
+          <td>Тип анимации для привлечения внимания</td>
           <td>wave</td>
+          <td>wave, bounce, glow, none</td>
         </tr>
         <tr>
           <td>color</td>
           <td>Основной цвет виджета</td>
           <td>#0088cc</td>
+          <td>Любой HEX цвет</td>
         </tr>
         <tr>
           <td>borderColor</td>
           <td>Цвет рамки пузыря</td>
           <td>#0088cc</td>
+          <td>Любой HEX цвет</td>
         </tr>
         <tr>
           <td>titleColor</td>
           <td>Цвет заголовка</td>
           <td>#0088cc</td>
+          <td>Любой HEX цвет</td>
         </tr>
         <tr>
           <td>subtitleColor</td>
           <td>Цвет подзаголовка</td>
           <td>#555</td>
+          <td>Любой HEX цвет</td>
         </tr>
         <tr>
           <td>autoOpen</td>
           <td>Автоматически показывать пузырь</td>
           <td>true</td>
+          <td>true, false</td>
         </tr>
         <tr>
           <td>rememberState</td>
           <td>Запоминать закрытие пользователем</td>
           <td>false</td>
+          <td>true, false</td>
         </tr>
         <tr>
           <td>darkMode</td>
           <td>Использовать тёмную тему</td>
           <td>false</td>
+          <td>true, false</td>
         </tr>
         <tr>
           <td>gradientBorder</td>
           <td>Использовать градиентную рамку</td>
           <td>false</td>
+          <td>true, false</td>
         </tr>
         <tr>
           <td>zIndex</td>
           <td>Z-index контейнера виджета</td>
           <td>9999</td>
+          <td>Любое положительное число</td>
         </tr>
       </table>
     </div>
@@ -320,7 +594,15 @@
         waveStrength: 'strong',
         attentionEffect: 'wave',
         darkMode: false,
-        gradientBorder: false
+        gradientBorder: false,
+        showDelay: 1000,
+        hideDelay: 10000,
+        waveDelay: 15000,
+        waveInterval: 30000,
+        zIndex: 9999,
+        autoOpen: true,
+        rememberState: false,
+        autoHide: true
       }
 
       // Текущие настройки
@@ -333,6 +615,8 @@
       function changePosition(position) {
         currentSettings.position = position
         configureTelegramWidget(currentSettings)
+        document.getElementById('config-position').value = position
+        updateConfig()
       }
 
       // Функция для изменения цвета виджета
@@ -341,12 +625,18 @@
         currentSettings.borderColor = color
         currentSettings.titleColor = color
         configureTelegramWidget(currentSettings)
+        document.getElementById('config-color').value = color
+        document.getElementById('config-border-color').value = color
+        document.getElementById('config-title-color').value = color
+        updateConfig()
       }
 
       // Функция для изменения эффекта анимации
       function changeEffect(effect) {
         currentSettings.attentionEffect = effect
         configureTelegramWidget(currentSettings)
+        document.getElementById('config-effect').value = effect
+        updateConfig()
       }
 
       // Функция для переключения тёмной темы
@@ -361,20 +651,183 @@
         }
 
         configureTelegramWidget(currentSettings)
+        document.getElementById('config-dark-mode').checked = currentSettings.darkMode
+        updateConfig()
       }
 
       // Функция для переключения градиентной рамки
       function toggleGradientBorder() {
         currentSettings.gradientBorder = !currentSettings.gradientBorder
         configureTelegramWidget(currentSettings)
+        document.getElementById('config-gradient-border').checked = currentSettings.gradientBorder
+        updateConfig()
+      }
+
+      // Функция для переключения автоматического скрытия
+      function toggleAutoHide() {
+        currentSettings.autoHide = !currentSettings.autoHide
+        // Если отключаем автоскрытие, устанавливаем hideDelay = 0
+        if (!currentSettings.autoHide) {
+          currentSettings.hideDelay = 0
+          document.getElementById('config-hide-delay').value = 0
+        } else {
+          currentSettings.hideDelay = 10000
+          document.getElementById('config-hide-delay').value = 10000
+        }
+        configureTelegramWidget(currentSettings)
+        document.getElementById('config-auto-hide').checked = currentSettings.autoHide
+        updateConfig()
       }
 
       // Функция для сброса настроек
       function resetWidget() {
         currentSettings = { ...defaultSettings }
         document.getElementById('darkModeDemo').style.display = 'none'
+
+        // Сбрасываем все поля формы
+        document.getElementById('config-username').value = defaultSettings.telegramUsername
+        document.getElementById('config-title').value = defaultSettings.title
+        document.getElementById('config-subtitle').value = defaultSettings.subtitle
+        document.getElementById('config-position').value = defaultSettings.position
+        document.getElementById('config-effect').value = defaultSettings.attentionEffect
+        document.getElementById('config-wave-strength').value = defaultSettings.waveStrength
+        document.getElementById('config-color').value = defaultSettings.color
+        document.getElementById('config-border-color').value = defaultSettings.borderColor
+        document.getElementById('config-title-color').value = defaultSettings.titleColor
+        document.getElementById('config-subtitle-color').value = defaultSettings.subtitleColor
+        document.getElementById('config-z-index').value = defaultSettings.zIndex
+        document.getElementById('config-show-delay').value = defaultSettings.showDelay
+        document.getElementById('config-hide-delay').value = defaultSettings.hideDelay
+        document.getElementById('config-dark-mode').checked = defaultSettings.darkMode
+        document.getElementById('config-gradient-border').checked = defaultSettings.gradientBorder
+        document.getElementById('config-auto-open').checked = defaultSettings.autoOpen
+        document.getElementById('config-remember-state').checked = defaultSettings.rememberState
+        document.getElementById('config-auto-hide').checked = defaultSettings.autoHide
+
         configureTelegramWidget(currentSettings)
+        updateConfig()
       }
+
+      // Функция для обновления настроек из формы
+      function updateConfig() {
+        // Собираем все настройки из формы
+        const config = {
+          telegramUsername: document.getElementById('config-username').value,
+          title: document.getElementById('config-title').value,
+          subtitle: document.getElementById('config-subtitle').value,
+          position: document.getElementById('config-position').value,
+          attentionEffect: document.getElementById('config-effect').value,
+          waveStrength: document.getElementById('config-wave-strength').value,
+          color: document.getElementById('config-color').value,
+          borderColor: document.getElementById('config-border-color').value,
+          titleColor: document.getElementById('config-title-color').value,
+          subtitleColor: document.getElementById('config-subtitle-color').value,
+          zIndex: parseInt(document.getElementById('config-z-index').value),
+          showDelay: parseInt(document.getElementById('config-show-delay').value),
+          hideDelay: parseInt(document.getElementById('config-hide-delay').value),
+          darkMode: document.getElementById('config-dark-mode').checked,
+          gradientBorder: document.getElementById('config-gradient-border').checked,
+          autoOpen: document.getElementById('config-auto-open').checked,
+          rememberState: document.getElementById('config-remember-state').checked,
+          autoHide: document.getElementById('config-auto-hide').checked
+        }
+
+        // Если hideDelay = 0, явно устанавливаем autoHide = false
+        if (config.hideDelay === 0) {
+          config.autoHide = false
+          document.getElementById('config-auto-hide').checked = false
+        }
+
+        // Обновляем текущие настройки
+        currentSettings = { ...config }
+
+        // Применяем настройки к виджету
+        configureTelegramWidget(currentSettings)
+
+        // Обновляем код для копирования
+        updateCodeOutputs(config)
+      }
+
+      // Функция для обновления трёх вариантов кода
+      function updateCodeOutputs(config) {
+        // JavaScript вариант
+        const jsOutput = document.getElementById('config-js-output')
+        let jsCode = `<script src="simple-telegram-widget.js"><\/script>\n<script>\n  configureTelegramWidget({\n`
+
+        for (const [key, value] of Object.entries(config)) {
+          const valueStr = typeof value === 'string' ? `'${value}'` : value
+          jsCode += `    ${key}: ${valueStr},\n`
+        }
+
+        jsCode += `  });\n<\/script>`
+        jsOutput.textContent = jsCode
+
+        // Data-атрибуты вариант
+        const dataAttrOutput = document.getElementById('config-data-attr-output')
+        let dataAttrCode = `<script\n  src="simple-telegram-widget.js"`
+
+        for (const [key, value] of Object.entries(config)) {
+          const paramName = key.replace(/([A-Z])/g, '-$1').toLowerCase()
+          dataAttrCode += `\n  data-${paramName}="${value}"`
+        }
+
+        dataAttrCode += `\n><\/script>`
+        dataAttrOutput.textContent = dataAttrCode
+
+        // CDN вариант
+        const cdnOutput = document.getElementById('config-cdn-output')
+        let cdnCode = `<script src="https://cdn.jsdelivr.net/gh/Doc-Code/web-widget-telegram@main/simple-telegram-widget.js"`
+
+        for (const [key, value] of Object.entries(config)) {
+          const paramName = key.replace(/([A-Z])/g, '-$1').toLowerCase()
+          cdnCode += `\n  data-${paramName}="${value}"`
+        }
+
+        cdnCode += `\n><\/script>`
+        cdnOutput.textContent = cdnCode
+      }
+
+      // Функция для копирования кода
+      function copyCode(elementId) {
+        const codeElement = document.getElementById(elementId)
+        const textArea = document.createElement('textarea')
+        textArea.value = codeElement.textContent
+        document.body.appendChild(textArea)
+        textArea.select()
+        document.execCommand('copy')
+        document.body.removeChild(textArea)
+
+        const copyBtn = document.querySelector(`#${elementId}`).parentNode.querySelector('.copy-btn')
+        copyBtn.textContent = 'Скопировано!'
+
+        setTimeout(() => {
+          copyBtn.textContent = 'Копировать'
+        }, 2000)
+      }
+
+      // Функция для переключения вкладок
+      function switchTab(tabElement, tabId) {
+        // Убираем активный класс у всех вкладок
+        document.querySelectorAll('.tab').forEach((tab) => {
+          tab.classList.remove('active')
+        })
+
+        // Убираем активный класс у всех содержимых вкладок
+        document.querySelectorAll('.tab-content').forEach((content) => {
+          content.classList.remove('active')
+        })
+
+        // Добавляем активный класс выбранной вкладке
+        tabElement.classList.add('active')
+
+        // Добавляем активный класс выбранному содержимому
+        document.getElementById(tabId).classList.add('active')
+      }
+
+      // Инициализация кода при загрузке страницы
+      document.addEventListener('DOMContentLoaded', function () {
+        updateConfig()
+      })
     </script>
   </body>
 </html>

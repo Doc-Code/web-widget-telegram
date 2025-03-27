@@ -40,7 +40,7 @@ A lightweight, customizable widget for connecting website visitors with your Tel
 </script>
 ```
 
-[See full documentation and examples](https://github.com/your-username/telegram-widget/blob/main/docs/en/README.md)
+[See full documentation and examples](https://github.com/Doc-Code/web-widget-telegram/blob/main/README.md)
 
 ---
 
